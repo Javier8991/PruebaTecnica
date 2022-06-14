@@ -35,19 +35,46 @@ $user = mysqli_fetch_assoc($resultado);
 
 // Obtener datos de las materias
 if($rol==="director") {
-    $cons = "SELECT * FROM asignatura ";
+    $cons = "SELECT a.ID, a.nombre FROM asignatura a;";
+    $res = mysqli_query($db,$cons);
+    $mayus = ucfirst($pagina);
+    $cons2 = "SELECT x.Asignatura_ID FROM ${pagina}_asignatura x WHERE x.${mayus}_ID='${idUser}';";
+    $res2 = mysqli_query($db,$cons2);
+    $idMaterias = [];
+    while($row = mysqli_fetch_assoc($res2)) {
+        $idMaterias[] = $row['Asignatura_ID'];
+    }
 }
 
 // Validar datos
 $errores = [];
-
-$nombre = $user['nombre'];
-$apellidoPaterno = $pagina!== "docente" ? $user['apellido_paterno']: '';
-$apellidoMaterno = $pagina!== "docente" ? $user['apellido_materno'] : '';
+if($pagina==="docente") {
+    $arregloNombre = explode(" ",$user['nombre']);
+    if(count($arregloNombre)===4) {
+        $nombreCompleto = $arregloNombre[0]." ".$arregloNombre[1];
+        $nombre = $nombreCompleto;
+        $apellidoPaterno = $pagina!== "docente" ? $user['apellido_paterno']: $arregloNombre[2];
+        $apellidoMaterno = $pagina!== "docente" ? $user['apellido_materno'] : $arregloNombre[3];
+    }elseif(count($arregloNombre)===3) {
+        $nombreCompleto = $arregloNombre[0];
+        $nombre = $nombreCompleto;
+        $apellidoPaterno = $pagina!== "docente" ? $user['apellido_paterno']: $arregloNombre[1];
+        $apellidoMaterno = $pagina!== "docente" ? $user['apellido_materno'] : $arregloNombre[2];
+    }
+}else {
+    $nombre = $user['nombre'];
+    $apellidoPaterno = $pagina!== "docente" ? $user['apellido_paterno']: '';
+    $apellidoMaterno = $pagina!== "docente" ? $user['apellido_materno'] : '';
+}
 $matricula = $user['matricula'];
 $password = '';
 
+
+// Proceso al presionar botón Submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // echo "<pre>";
+    // var_dump($_POST);
+    // echo "</pre>";
     $nombre = $_POST['nombre'];
     $apellidoPaterno = $_POST['apellidoP'];
     $apellidoMaterno = $_POST['apellidoM'];
@@ -86,11 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $query = "UPDATE ${pagina} SET nombre='${nombre}',apellido_paterno='${apellidoPaterno}',apellido_materno='${apellidoMaterno}',matricula='${matricula}',contrasena='${passHash}',Instituto_ID='1' WHERE id = ${idUser};";
         }
 
-        $resultado = mysqli_query($db,$query) or die(mysqli_error($db));
 
-        if($resultado) {
-            header('Location: ../datos.php?msg=2&page='.$pagina);
-        }
+        // $resultado = mysqli_query($db,$query) or die(mysqli_error($db));
+
+        // if($resultado) {
+        //     header('Location: ../datos.php?msg=2&page='.$pagina);
+        // }
     }
 }
 
@@ -127,12 +155,16 @@ incluirTemplate('header');
                 <legend>Materias</legend>
                 <p>Elija las materias que imparte el docente:</p>
                 <div class="forma-contacto">
-                    <label for="algebra">Algebra</label>
-                    <input type="checkbox" name="algebra" value="algebra" id="algebra">
-                    <label for="algebra">Algebra</label>
-                    <input type="checkbox" name="algebra" value="algebra" id="algebra">
-                    <label for="algebra">Algebra</label>
-                    <input type="checkbox" name="algebra" value="algebra" id="algebra">
+                    <?php while($row = mysqli_fetch_assoc($res)):?>
+                        <label for="<?php echo $row['nombre'] ?>"><?php echo $row['nombre'] ?></label>
+                        <input type="checkbox" 
+                            name="<?php echo $row['nombre'] ?>" 
+                            value="<?php echo $row['ID']?>" 
+                            id="<?php echo $row['nombre'] ?>" 
+                            <?php foreach($idMaterias as $materia) {if($materia==$row['ID']){
+                                echo "checked";
+                            }}?>>
+                    <?php endwhile;?>
                 </div>
             </fieldset>
         <?php endif?>
