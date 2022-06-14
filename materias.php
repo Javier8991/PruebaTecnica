@@ -46,8 +46,6 @@ incluirTemplate('header');
             echo '<p class="alerta exito">Materia Creada Correctamente</p>';
         }else if($msg == 2) {
             echo '<p class="alerta exito">Materia Actualizada Correctamente</p>';
-        }else if($msg == 3) {
-            echo '<p class="alerta exito">Materia Eliminada Correctamente</p>';
         }
     ?>
     
@@ -85,7 +83,7 @@ incluirTemplate('header');
                         value="Borrar">
                     </form>
 
-                    <a href="actualizar.php" class="boton btn-naranja">Actualizar</a>
+                    <a href="materias/actualizar.php?id=<?php echo $row['ID']?>" class="boton btn-naranja">Actualizar</a>
                 </td>
                 <?php elseif($user==="2"&&$user!=="3"):?>
                 <td>
