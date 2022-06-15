@@ -114,11 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
 
-        // $resultado = mysqli_query($db,$query) or die(mysqli_error($db));
+        $resultado = mysqli_query($db,$query) or die(mysqli_error($db));
 
-        // if($resultado) {
-        //     header('Location: ../datos.php?msg=2&page='.$pagina);
-        // }
+        if($resultado) {
+            header('Location: ../datos.php?msg=2&page='.$pagina);
+        }
     }
 }
 
@@ -132,6 +132,8 @@ incluirTemplate('header');
         <a href="../alumnoMateria.php?id=<?php echo $id?>&user=<?php echo $tipo ?>&mat=<?php echo $materia?>" class="boton btn-principal">Volver</a>
     <?php else: ?>
         <a href="../datos.php?page=<?php echo $pagina ?>" class="boton btn-principal">Volver</a>
+        <a href="../materias/cargaMaterias.php?type=<?php echo $pagina?>&id=<?php echo $idUser?>" class="boton btn-secundario">Añadir Materias</a>
+        <a href="../materias/cargaMaterias.php?type=<?php echo $pagina?>&id=<?php echo $idUser?>&del=1" class="boton btn-principal">Eliminar Materias</a>
     <?php endif;?>
 
     <form class="formulario" method="POST" enctype="multipart/form-data">
@@ -153,7 +155,11 @@ incluirTemplate('header');
         <?php if($rol == "director"):?>
             <fieldset>
                 <legend>Materias</legend>
-                <p>Elija las materias que imparte el docente:</p>
+                <?php if($pagina=="docente"): ?>
+                    <p>Las materias que actualmente imparte el docente son:</p>
+                <?php else: ?>
+                    <p>Las materias que actualmente cursa el alumno son:</p>
+                <?php endif; ?>
                 <div class="forma-contacto">
                     <?php while($row = mysqli_fetch_assoc($res)):?>
                         <label for="<?php echo $row['nombre'] ?>"><?php echo $row['nombre'] ?></label>
@@ -166,10 +172,14 @@ incluirTemplate('header');
                             }}?>>
                     <?php endwhile;?>
                 </div>
-                <a href=""></a>
             </fieldset>
         <?php endif?>
 
         <input type="submit" value="Actualizar Usuario" class="boton btn-secundario">
     </form>
 </main>
+
+<?php
+incluirTemplate('footer');
+mysqli_close($db);
+?>

@@ -25,12 +25,7 @@ if($_SERVER['REQUEST_METHOD']==='POST') {
     $query = "DELETE FROM ${pagina} WHERE id = '${id}'";
     $resultado = mysqli_query($db,$query) or die(mysqli_error($db));
 
-    // if($pagina==="docente"){
-    //     $cons = "DELETE FROM docente_asignatura WHERE Docente_ID = '${id}'";
-    //     $res = mysqli_query($db,$cons) or die(mysqli_error($db));
-    // }
-
-    if($resultado /*&& $res*/) {
+    if($resultado) {
         header('Location: datos.php?msg=3&page='.$pagina);
     }
 }
