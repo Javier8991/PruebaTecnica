@@ -20,12 +20,13 @@
 <body>
     <header class="header">
         <div class="contenedor contenido-header">
-            <img src="https://www.uaeh.edu.mx/images/uaeh.png" alt="Logo UAEH" class="logo">
+            <img src="/build/img/uaeh.webp" alt="Logo UAEH" class="logo">
             <?php if($auth):?>
-                <div>
+                <div class="datos-usuario">
                     <span><?php echo strtoupper($_SESSION['rol']) .": ". ucfirst($_SESSION['nombre'])?></span>
                     <span>Número de empleado: <?php echo $_SESSION['rol']==='director' ? $_SESSION['numero_empleado']: $_SESSION['matricula']?></span>
                 </div>
+                <a href="/cerrarSesion.php" class="boton btn-principal">Cerrar Sesión</a>
             <?php endif; ?>
             <?php if(!$auth): ?>
             <h1>Universidad Autonoma del Estado de Hidalgo</h1>

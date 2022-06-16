@@ -50,7 +50,7 @@ incluirTemplate('header');
     <a href="indexDirectivos.php" class="boton btn-principal">Volver</a>
     <a href="usuarios/crear.php?type=<?php echo strtolower($pagina)?>" class="boton btn-secundario">Nuevo <?php echo $pagina?></a>
     <a href="exportarCSV.php?type=<?php echo $pagina=="Alumno" ? 'alumno' : 'docente' ?>" class="boton btn-secundario">Generar CSV</a>
-    <a href="#" class="boton btn-secundario">Generar PDF</a>
+    <a href="plantilla.php?type=<?php echo $pagina=="Alumno" ? 'alumno' : 'docente' ?>" target="_blank" class="boton btn-secundario">Generar PDF</a>
 
     <table class="datos">
         <thead>

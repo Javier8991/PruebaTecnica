@@ -4,7 +4,7 @@
                 <a href="https://www.uaeh.edu.mx/legal.html">Aviso Legal</a>
                 <a href="https://www.uaeh.edu.mx/privacidad.html">Aviso de Privacidad</a>
             </div>
-            <img class="logo-footer" src="https://www.uaeh.edu.mx/images/logo-uaeh.png" alt="Logo UAEH">
+            <img class="logo-footer" src="/build/img/logo-uaeh.webp" alt="Logo UAEH">
             <div class="contenedor-contactos">
                 <h3>Contacto</h3>
                 <div class="contactos">
